@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Sixypress by jasonbaudendistel</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Sixypress</h1>
+        <p>Beginning Code For Sixy Press platform</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/jasonbaudendistel/Sixypress" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/jasonbaudendistel/Sixypress/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/jasonbaudendistel/Sixypress/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <p>&lt;?php
+/* vim: set expandtab sw=4 ts=4 sts=4: <em>/
+/</em>*</p>
+
+<ul>
+<li>Front controller for config view / download and clear
+*</li>
+<li>
+<a href="https://github.com/package" class="user-mention">@package</a> PhpMyAdmin-setup
+*/</li>
+</ul><p>/**</p>
+
+<ul>
+<li>Core libraries.
+*/
+require './lib/common.inc.php';
+require_once './libraries/config/Form.class.php';
+require_once './libraries/config/FormDisplay.class.php';
+require_once './setup/lib/ConfigGenerator.class.php';</li>
+</ul><p>require './libraries/config/setup.forms.php';</p>
+
+<p>$form_display = new FormDisplay();
+$form_display-&gt;registerForm('_config.php', $forms['_config.php']);
+$form_display-&gt;save('_config.php');
+$config_file_path = ConfigFile::getInstance()-&gt;getFilePath();</p>
+
+<p>if (isset($_POST['eol'])) {
+    $_SESSION['eol'] = ($_POST['eol'] == 'unix') ? 'unix' : 'win';
+}</p>
+
+<p>if (PMA_ifSetOr($_POST['submit_clear'], '')) {
+    //
+    // Clear current config and return to main page
+    //
+    ConfigFile::getInstance()-&gt;resetConfigData();
+    // drop post data
+    header('HTTP/1.1 303 See Other');
+    header('Location: index.php');
+    exit;
+} elseif (PMA_ifSetOr($_POST['submit_download'], '')) {
+    //
+    // Output generated config file
+    //
+    PMA_download_header('config.inc.php', 'text/plain');
+    echo ConfigGenerator::getConfigFile();
+    exit;
+} elseif (PMA_ifSetOr($_POST['submit_save'], '')) {
+    //
+    // Save generated config file on the server
+    //
+    file_put_contents($config_file_path, ConfigGenerator::getConfigFile());
+    header('HTTP/1.1 303 See Other');
+    header('Location: index.php?action_done=config_saved');
+    exit;
+} elseif (PMA_ifSetOr($_POST['submit_load'], '')) {
+    //
+    // Load config file from the server
+    //
+    $cfg = array();
+    include_once $config_file_path;
+    ConfigFile::getInstance()-&gt;setConfigData($cfg);
+    header('HTTP/1.1 303 See Other');
+    header('Location: index.php');
+    exit;
+} elseif (PMA_ifSetOr($_POST['submit_delete'], '')) {
+    //
+    // Delete config file on the server
+    //
+    @unlink($config_file_path);
+    header('HTTP/1.1 303 See Other');
+    header('Location: index.php');
+    exit;
+} else {
+    //
+    // Show generated config file in a 
+    //
+    header('HTTP/1.1 303 See Other');
+    header('Location: index.php?page=config');
+    exit;
+}
+?&gt;</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/jasonbaudendistel">jasonbaudendistel</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
